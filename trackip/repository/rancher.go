@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"time"
 
 	"github.com/disaster37/rancher-track-ip/model"
@@ -45,11 +44,10 @@ func (h *rancherRepository) GetContainers(ctx context.Context) (listContainers [
 				Image:    container.ImageUuid,
 			}
 
-			i, err := strconv.ParseInt(container.Created, 10, 64)
+			containerInfo.StartedAt, err = time.Parse(time.RFC3339, container.Created)
 			if err != nil {
 				return nil, err
 			}
-			containerInfo.StartedAt = time.Unix(i, 0)
 
 			listContainers = append(listContainers, containerInfo)
 		}
