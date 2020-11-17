@@ -31,26 +31,33 @@ func (h *rancherRepository) GetContainers(ctx context.Context) (listContainers [
 		return
 	}
 
-	log.Debugf("Found %d containers", len(containers.Data))
+	for containers != nil {
+		log.Debugf("Found %d containers", len(containers.Data))
 
-	for _, container := range containers.Data {
-		containerInfo := &model.Container{
-			ID:       fmt.Sprintf("%s_%s", container.Uuid, container.ExternalId),
-			IP:       container.Ip,
-			Hostname: container.Hostname,
-			Status:   container.State,
-			Name:     container.Name,
-			Project:  fmt.Sprintf("%s/%s", container.StackId, container.ServiceId),
-			Image:    container.ImageUuid,
+		for _, container := range containers.Data {
+			containerInfo := &model.Container{
+				ID:       fmt.Sprintf("%s_%s", container.Uuid, container.ExternalId),
+				IP:       container.Ip,
+				Hostname: container.Hostname,
+				Status:   container.State,
+				Name:     container.Name,
+				Project:  fmt.Sprintf("%s/%s", container.StackId, container.ServiceId),
+				Image:    container.ImageUuid,
+			}
+
+			i, err := strconv.ParseInt(container.Created, 10, 64)
+			if err != nil {
+				return nil, err
+			}
+			containerInfo.StartedAt = time.Unix(i, 0)
+
+			listContainers = append(listContainers, containerInfo)
 		}
 
-		i, err := strconv.ParseInt(container.Created, 10, 64)
+		containers, err = containers.Next()
 		if err != nil {
 			return nil, err
 		}
-		containerInfo.StartedAt = time.Unix(i, 0)
-
-		listContainers = append(listContainers, containerInfo)
 	}
 
 	return
