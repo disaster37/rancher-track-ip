@@ -1,6 +1,6 @@
 elasticsearch:
   urls: 
-    - 'http://localhost:9200'
+    - 'https://elasticsearch-log-rec.rancher-hpd.hm.dm.ad/'
   username: 'elastic'
   password: 'changeme'
   index: 'track-ip-alias'

@@ -57,7 +57,7 @@ func main() {
 
 	opts := &rancher.ClientOpts{
 		Url:       configHandler.GetString("rancher.url"),
-		AccessKey: configHandler.GetString("rancher.username"),
+		AccessKey: configHandler.GetString("rancher.key"),
 		SecretKey: configHandler.GetString("rancher.secret"),
 		Timeout:   time.Second * 5,
 	}
