@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/disaster37/rancher-track-ip/trackip"
+	log "github.com/sirupsen/logrus"
 )
 
 type trackIPUsecase struct {
@@ -22,7 +23,6 @@ func NewTrackIPUsecase(elasticsearchRepo trackip.ElasticsearchRepository, ranche
 func (h *trackIPUsecase) TrackContainers(ctx context.Context, loopIntervalSecond int64) error {
 
 	for {
-		time.Sleep(time.Duration(loopIntervalSecond) * time.Second)
 
 		containers, err := h.RancherRepo.GetContainers(ctx)
 		if err != nil {
@@ -35,5 +35,9 @@ func (h *trackIPUsecase) TrackContainers(ctx context.Context, loopIntervalSecond
 				return err
 			}
 		}
+
+		log.Info("Process finished, wait next loop")
+
+		time.Sleep(time.Duration(loopIntervalSecond) * time.Second)
 	}
 }
