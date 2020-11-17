@@ -68,7 +68,7 @@ func main() {
 	}
 
 	// Init repositories
-	elasticRepo := repository.NewElasticsearchRepository(elasticClient, configHandler.GetString("elastic.index"))
+	elasticRepo := repository.NewElasticsearchRepository(elasticClient, configHandler.GetString("elasticsearch.index"))
 	rancherRepo := repository.NewRancherRepository(rancherClient)
 
 	// Init usecase
