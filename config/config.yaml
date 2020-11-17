@@ -1,0 +1,13 @@
+elasticsearch:
+  urls: 
+    - 'http://localhost:9200'
+  username: 'elastic'
+  password: 'changeme'
+  index: 'track-ip-alias'
+rancher:
+  url: 'http://localhost:8080'
+  key: ''
+  secret: ''
+log:
+  level: 'DEBUG'
+loop: 10
