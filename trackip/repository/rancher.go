@@ -48,6 +48,13 @@ func (h *rancherRepository) GetContainers(ctx context.Context) (listContainers [
 				return nil, err
 			}
 
+			if container.Removed != "" {
+				containerInfo.FinishedAt, err = time.Parse(time.RFC3339, container.Removed)
+				if err != nil {
+					return nil, err
+				}
+			}
+
 			// Get host info
 			hosts := &rancherClient.HostCollection{}
 			err = h.Conn.GetLink(container.Resource, "hosts", hosts)
