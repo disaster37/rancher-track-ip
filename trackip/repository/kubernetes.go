@@ -41,7 +41,7 @@ func (h *kubernetesRepository) GetContainers(ctx context.Context) (listContainer
 			Hostname:  pod.Spec.NodeName,
 			Status:    string(pod.Status.Phase),
 			Name:      pod.Name,
-			Project:   fmt.Sprintf("%s/%s", pod.ClusterName, pod.Namespace),
+			Project:   fmt.Sprintf("%s", pod.Namespace),
 			StartedAt: pod.CreationTimestamp.Time,
 			Platform:  "kubernetes",
 		}

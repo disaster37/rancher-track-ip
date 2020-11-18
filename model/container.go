@@ -11,7 +11,7 @@ type Container struct {
 	Hostname   string    `json:"host.name"`
 	HostIP     string    `json:"host.ip"`
 	StartedAt  time.Time `json:"container.start"`
-	FinishedAt time.Time `json:"container.stop"`
+	FinishedAt time.Time `json:"container.stop,omitempty"`
 	Status     string    `json:"container.status"`
 	Name       string    `json:"container.name"`
 	Project    string    `json:"container.labels.project,omitempty"`
