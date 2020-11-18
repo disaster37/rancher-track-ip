@@ -35,16 +35,19 @@ func (h *kubernetesRepository) GetContainers(ctx context.Context) (listContainer
 
 	for _, pod := range pods.Items {
 		containerInfo := &model.Container{
-			ID:         string(pod.UID),
-			IP:         pod.Status.PodIP,
-			HostIP:     pod.Status.HostIP,
-			Hostname:   pod.Spec.NodeName,
-			Status:     string(pod.Status.Phase),
-			Name:       pod.Name,
-			Project:    fmt.Sprintf("%s/%s", pod.ClusterName, pod.Namespace),
-			StartedAt:  pod.CreationTimestamp.Time,
-			FinishedAt: pod.DeletionTimestamp.Time,
-			Platform:   "kubernetes",
+			ID:        string(pod.UID),
+			IP:        pod.Status.PodIP,
+			HostIP:    pod.Status.HostIP,
+			Hostname:  pod.Spec.NodeName,
+			Status:    string(pod.Status.Phase),
+			Name:      pod.Name,
+			Project:   fmt.Sprintf("%s/%s", pod.ClusterName, pod.Namespace),
+			StartedAt: pod.CreationTimestamp.Time,
+			Platform:  "kubernetes",
+		}
+
+		if pod.DeletionTimestamp != nil {
+			containerInfo.FinishedAt = pod.DeletionTimestamp.Time
 		}
 
 		// Get all pods images
