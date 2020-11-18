@@ -35,18 +35,28 @@ func (h *rancherRepository) GetContainers(ctx context.Context) (listContainers [
 
 		for _, container := range containers.Data {
 			containerInfo := &model.Container{
-				ID:       fmt.Sprintf("%s_%s", container.Uuid, container.ExternalId),
-				IP:       container.Ip,
-				Hostname: container.Hostname,
-				Status:   container.State,
-				Name:     container.Name,
-				Project:  fmt.Sprintf("%s/%s", container.StackId, container.ServiceId),
-				Image:    container.ImageUuid,
+				ID:      fmt.Sprintf("%s_%s", container.Uuid, container.ExternalId),
+				IP:      container.PrimaryIpAddress,
+				Status:  container.State,
+				Name:    container.Name,
+				Project: fmt.Sprintf("%s/%s", container.AccountId, container.Labels["io.rancher.project_service.name"]),
+				Image:   container.ImageUuid,
 			}
 
 			containerInfo.StartedAt, err = time.Parse(time.RFC3339, container.Created)
 			if err != nil {
 				return nil, err
+			}
+
+			// Get host info
+			hosts := &rancherClient.HostCollection{}
+			err = h.Conn.GetLink(container.Resource, "hosts", hosts)
+			if err != nil {
+				return nil, err
+			}
+			if len(hosts.Data) > 0 {
+				containerInfo.Hostname = hosts.Data[0].Name
+				containerInfo.HostIP = hosts.Data[0].AgentIpAddress
 			}
 
 			listContainers = append(listContainers, containerInfo)
