@@ -35,12 +35,13 @@ func (h *rancherRepository) GetContainers(ctx context.Context) (listContainers [
 
 		for _, container := range containers.Data {
 			containerInfo := &model.Container{
-				ID:      fmt.Sprintf("%s_%s_%s", container.Id, container.Uuid, container.ExternalId),
-				IP:      container.PrimaryIpAddress,
-				Status:  container.State,
-				Name:    container.Name,
-				Project: fmt.Sprintf("%s/%s", container.AccountId, container.Labels["io.rancher.project_service.name"]),
-				Image:   container.ImageUuid,
+				ID:       fmt.Sprintf("%s_%s_%s", container.Id, container.Uuid, container.ExternalId),
+				IP:       container.PrimaryIpAddress,
+				Status:   container.State,
+				Name:     container.Name,
+				Project:  fmt.Sprintf("%s/%s", container.AccountId, container.Labels["io.rancher.project_service.name"]),
+				Image:    container.ImageUuid,
+				Platform: "cattle",
 			}
 
 			containerInfo.StartedAt, err = time.Parse(time.RFC3339, container.Created)

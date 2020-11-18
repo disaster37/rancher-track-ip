@@ -11,3 +11,4 @@ rancher:
 log:
   level: 'DEBUG'
 loop: 10
+platform: 'kubernetes'

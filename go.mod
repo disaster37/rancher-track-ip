@@ -11,5 +11,7 @@ require (
 	github.com/sirupsen/logrus v1.7.0
 	github.com/spf13/viper v1.7.0
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
+	k8s.io/apimachinery v0.18.6
+	k8s.io/client-go v0.18.6
 
 )

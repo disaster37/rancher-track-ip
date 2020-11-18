@@ -16,6 +16,7 @@ type Container struct {
 	Name       string    `json:"container.name"`
 	Project    string    `json:"container.labels.project,omitempty"`
 	Image      string    `json:"container.image.name"`
+	Platform   string    `json:"container.platform"`
 }
 
 func (h *Container) String() string {
